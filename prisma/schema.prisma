@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  password    String
+  name        String?
+  role        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assessments Assessment[] @relation("AssessmentCreator")
+}
+
+model Assessment {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  duration    Int
+
+  createdBy   String
+  creator     User @relation("AssessmentCreator", fields: [createdBy], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  questions   Question[]
+  submissions Submission[]
+  invitations Invitation[]
+}
+
+model Question {
+  id           String @id @default(cuid())
+
+  assessmentId String
+  assessment   Assessment @relation(fields: [assessmentId], references: [id])
+
+  title        String
+  description  String
+  difficulty   String
+  points       Int
+  order        Int
+
+  testCases    TestCase[]
+  submissions  Submission[]
+}
+
+model TestCase {
+  id             String @id @default(cuid())
+
+  questionId     String
+  question       Question @relation(fields: [questionId], references: [id])
+
+  input          Json
+  expectedOutput Json
+  isHidden       Boolean @default(false)
+  order          Int
+}
+
+model Submission {
+  id String @id @default(cuid())
+
+  invitationId String
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  assessmentId String
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+
+  questionId String?
+  question Question? @relation(fields: [questionId], references: [id])
+
+  code String
+  language String
+  status String
+
+  results Json?
+
+  passed Int?
+  failed Int?
+
+  executionTime Int?
+  memoryUsed Int?
+
+  isFinal Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([invitationId])
+  @@index([assessmentId])
+}
+
+model CandidateEvent {
+  id String @id @default(cuid())
+
+  invitationId String
+  invitation Invitation @relation(fields: [invitationId], references: [id], onDelete: Cascade)
+
+  sessionId String
+  eventType String
+
+  metadata Json?
+
+  timestamp DateTime @default(now())
+
+  @@index([invitationId])
+}
+
+model Invitation {
+  id String @id @default(cuid())
+
+  assessmentId String
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+
+  email String
+
+  token String @unique
+
+  status String
+
+  expiresAt DateTime
+
+  startedAt DateTime?
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  submissions Submission[]
+
+  events CandidateEvent[]
+
+  @@index([assessmentId])
+  @@index([token])
+}

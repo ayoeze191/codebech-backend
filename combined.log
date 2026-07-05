@@ -1,0 +1,18 @@
+{"level":"info","message":{"duration":138,"ip":"::ffff:127.0.0.1","method":"POST","status":500,"url":"/login"},"timestamp":"2026-06-27T11:11:05.871Z"}
+{"level":"info","message":{"duration":2,"ip":"::ffff:127.0.0.1","method":"POST","status":401,"url":"/"},"timestamp":"2026-06-27T11:11:05.888Z"}
+{"level":"info","message":{"duration":142,"ip":"::ffff:127.0.0.1","method":"POST","status":500,"url":"/login"},"timestamp":"2026-06-27T11:18:19.139Z"}
+{"level":"info","message":{"duration":2,"ip":"::ffff:127.0.0.1","method":"POST","status":401,"url":"/"},"timestamp":"2026-06-27T11:18:19.153Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2026-06-27T11:21:19.926Z"}
+{"level":"info","message":"Environment: development","timestamp":"2026-06-27T11:21:19.929Z"}
+{"level":"info","message":"PID: 980435","timestamp":"2026-06-27T11:21:19.930Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2026-06-27T11:40:26.423Z"}
+{"level":"info","message":"Environment: development","timestamp":"2026-06-27T11:40:26.426Z"}
+{"level":"info","message":"PID: 998193","timestamp":"2026-06-27T11:40:26.427Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2026-06-27T11:47:44.347Z"}
+{"level":"info","message":"Environment: development","timestamp":"2026-06-27T11:47:44.350Z"}
+{"level":"info","message":"PID: 1004009","timestamp":"2026-06-27T11:47:44.351Z"}
+{"level":"info","message":{"duration":74,"ip":"127.0.0.1","method":"POST","status":500,"url":"/login"},"timestamp":"2026-06-27T11:57:01.613Z"}
+{"level":"info","message":{"duration":213,"ip":"127.0.0.1","method":"POST","status":500,"url":"/register"},"timestamp":"2026-06-27T11:58:39.639Z"}
+{"level":"info","message":"Server running on port 3000","timestamp":"2026-06-27T12:02:45.479Z"}
+{"level":"info","message":"Environment: development","timestamp":"2026-06-27T12:02:45.481Z"}
+{"level":"info","message":"PID: 1016295","timestamp":"2026-06-27T12:02:45.482Z"}
