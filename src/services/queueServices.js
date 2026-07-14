@@ -68,14 +68,20 @@ submissionQueue.on("completed", (job, result) => {
   );
 
   // Emit WebSocket update
-  const io = require("../sockets").getIO();
-  io.to(`invitation-${result.invitationId}`).emit("submission:result", {
-    submissionId: job.data.submissionId,
-    passed: result.passed,
-    failed: result.failed,
-    executionTime: result.executionTime,
-    status: "COMPLETED",
-  });
+  try {
+    const io = require("../sockets").getIO();
+    io.to(`invitation-${result.invitationId}`).emit("submission:result", {
+      submissionId: job.data.submissionId,
+      passed: result.passed,
+      failed: result.failed,
+      executionTime: result.executionTime,
+      status: "COMPLETED",
+    });
+  } catch (error) {
+    // A dedicated worker has no Socket.IO server. Persisted results remain
+    // authoritative and the candidate UI polls them while execution runs.
+    logger.debug("Socket notification skipped:", error.message);
+  }
 });
 
 submissionQueue.on("failed", (job, error) => {

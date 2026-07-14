@@ -1,55 +1,23 @@
 const express = require("express");
 const { authMiddleware, roleMiddleware } = require("../middleware/auth");
 const prisma = require("../config/database");
-const EmailService = require("./../services/emailService");
-const crypto = require("crypto");
+
 const router = express.Router();
 
-router.get("/me", authMiddleware, async (req, res) => {
-  res.json({
-    id: req.user.id,
-    email: req.user.email,
-    name: req.user.name,
-    role: req.user.role,
-  });
-});
-
-router.get(
-  "/",
-  authMiddleware,
-  roleMiddleware(["ADMIN", "RECRUITER"]),
-  async (req, res) => {
-    const candidates = await prisma.user.findMany({
-      where: { role: "CANDIDATE" },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        createdAt: true,
-      },
-      orderBy: { createdAt: "desc" },
+router.get("/:invitationId/events", authMiddleware, roleMiddleware(["RECRUITER", "ADMIN"]), async (req, res) => {
+  try {
+    const invitation = await prisma.invitation.findUnique({
+      where: { id: req.params.invitationId },
+      include: { assessment: { select: { createdBy: true } } },
     });
-
-    res.json(candidates);
-  },
-);
-
-router.get(
-  "/:id/events",
-  authMiddleware,
-  roleMiddleware(["ADMIN", "RECRUITER"]),
-  async (req, res) => {
-    const events = await prisma.candidateEvent.findMany({
-      where: { invitationId: req.params.invitationId },
-      orderBy: { timestamp: "desc" },
-      take: 100,
-    });
-
+    if (!invitation) return res.status(404).json({ error: "Candidate invitation not found." });
+    if (req.user.role !== "ADMIN" && invitation.assessment.createdBy !== req.user.id) return res.status(403).json({ error: "Not authorized." });
+    const events = await prisma.candidateEvent.findMany({ where: { invitationId: invitation.id }, orderBy: { timestamp: "desc" } });
     res.json(events);
-  },
-);
-
-router.get("/test", (req, res) => {
-  res.send("Candidates router is working");
+  } catch (error) {
+    console.error("List candidate events error:", error);
+    res.status(500).json({ error: "Failed to fetch candidate events." });
+  }
 });
+
 module.exports = router;

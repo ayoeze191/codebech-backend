@@ -21,7 +21,10 @@ app.use(
 app.use(compression());
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || "*",
+    // `credentials: true` cannot be combined with a wildcard origin in browsers.
+    origin: process.env.CORS_ORIGIN
+      ? process.env.CORS_ORIGIN.split(",").map((origin) => origin.trim())
+      : true,
     credentials: true,
   }),
 );
@@ -47,6 +50,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/assessments", require("./routes/assessments"));
 app.use("/api/submissions", require("./routes/submissions"));
 app.use("/api/candidates", require("./routes/candidates"));
+app.use("/api/invitations", require("./routes/invitations"));
 
 // Bull Board for queue monitoring (optional)
 if (process.env.NODE_ENV === "production") {

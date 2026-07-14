@@ -27,7 +27,8 @@ class SubmissionService {
       });
 
       // Execute code
-      const results = await this.executeCode(submission);
+      const execution = await this.executeCode(submission);
+      const results = Array.isArray(execution) ? execution : execution.results || [];
 
       // Calculate statistics
       const passed = results.filter((r) => r.passed).length;
@@ -50,7 +51,7 @@ class SubmissionService {
         },
         include: {
           assessment: true,
-          candidate: true,
+          invitation: true,
         },
       });
 
@@ -155,7 +156,7 @@ class SubmissionService {
   async sendCompletionNotifications(submission) {
     // Send email notification
     const emailService = require("./emailService");
-    if (submission.candidate && submission.assessment) {
+    if (submission.invitation && submission.assessment) {
       const total = (submission.passed || 0) + (submission.failed || 0);
       await emailService.sendSubmissionConfirmation(
         submission.invitation.email,

@@ -1,7 +1,6 @@
 const { submissionQueue } = require("../services/queueServices");
 const dockerSandbox = require("../services/dockerService");
 const prisma = require("../config/database");
-const { getIO } = require("../sockets");
 
 async function executeCode(job) {
   const { submissionId, code, language, questionId } = job.data;
@@ -23,15 +22,19 @@ async function executeCode(job) {
       },
     });
 
-    const results = await dockerSandbox.executeCode({
+    const execution = await dockerSandbox.executeCode({
       code,
       language,
       testCases,
     });
+    if (!Array.isArray(execution) && execution.status === "ERROR") {
+      throw new Error(execution.error || "Code execution failed");
+    }
+    const results = Array.isArray(execution) ? execution : execution.results || [];
 
     const passed = results.filter((r) => r.passed).length;
     const failed = results.length - passed;
-    const score = (passed / results.length) * 100;
+    const score = results.length ? (passed / results.length) * 100 : 0;
 
     const submission = await prisma.submission.update({
       where: {
@@ -42,23 +45,17 @@ async function executeCode(job) {
         passed,
         failed,
         results,
-        executionTime: results.reduce((sum, r) => sum + r.executionTime, 0),
-        memoryUsed: results.reduce((sum, r) => sum + r.memoryUsed, 0),
+        executionTime: execution.executionTime || results.reduce((sum, r) => sum + (r.executionTime || 0), 0),
+        memoryUsed: execution.memoryUsed || results.reduce((sum, r) => sum + (r.memoryUsed || 0), 0),
       },
     });
 
-    getIO()
-      .to(`candidate-${submission.invitationId}`)
-      .emit("submission:result", {
-        submissionId,
-        score,
-        passed,
-        failed,
-        results,
-      });
-
     return {
       submissionId,
+      invitationId: submission.invitationId,
+      passed,
+      failed,
+      executionTime: submission.executionTime,
       score,
     };
   } catch (err) {

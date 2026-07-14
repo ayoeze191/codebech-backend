@@ -93,6 +93,7 @@ model Submission {
 
   @@index([invitationId])
   @@index([assessmentId])
+  @@unique([invitationId, questionId])
 }
 
 model CandidateEvent {
