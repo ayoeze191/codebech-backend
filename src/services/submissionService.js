@@ -1,4 +1,3 @@
-// src/services/submissionService.js
 const prisma = require("../config/database");
 const { logger } = require("../config/monitoring");
 
@@ -28,7 +27,9 @@ class SubmissionService {
 
       // Execute code
       const execution = await this.executeCode(submission);
-      const results = Array.isArray(execution) ? execution : execution.results || [];
+      const results = Array.isArray(execution)
+        ? execution
+        : execution.results || [];
 
       // Calculate statistics
       const passed = results.filter((r) => r.passed).length;

@@ -1,0 +1,225 @@
+# CodeBench Backend
+
+A scalable backend for **CodeBench**, an online coding platform that allows users to solve programming challenges, submit solutions, and execute code securely. The backend provides authentication, challenge management, submissions, code execution integration, and administrative features through a RESTful API.
+
+---
+
+## ✨ Features
+
+- 🔐 User authentication and authorization
+- 📝 Coding challenge management
+- 🚀 Code execution
+- ✅ Automated test case evaluation
+- 📊 Submission history
+- 📂 RESTful API
+- 🛡️ Role-based access control
+- 📄 API validation and error handling
+
+---
+
+## 🛠️ Tech Stack
+
+- **Node.js**
+- **Express.js**
+- **TypeScript** (or JavaScript)
+- **MongoDB**
+- **Mongoose**
+- **JWT Authentication**
+- **Bcrypt**
+- **Docker** (optional)
+
+---
+
+## 📁 Project Structure
+
+```text
+docker/
+    |──sandbox/
+prisma/
+src/
+├── config/
+├── controllers/
+├── middlewares/
+├── models/
+├── routes/
+├── services/
+├── app.ts
+└── server.ts
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js >= 18
+- PostGress
+- npm or yarn
+
+---
+
+### Installation
+
+Clone the repository
+
+```bash
+git clone https://github.com/ayoeze191/codebench-backend.git
+```
+
+Navigate into the project
+
+```bash
+cd codebench-backend
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+---
+
+## ⚙️ Environment Variables
+
+Create a `.env` file in the root directory.
+
+```env
+
+
+JWT_SECRET=
+
+JWT_EXPIRES_IN=7d
+
+CLIENT_URL=http://localhost:3000
+
+
+```
+
+Only include variables your project actually uses.
+
+---
+
+## ▶️ Running the Application
+
+Development
+
+```bash
+npm run dev
+```
+
+Production
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## 📚 API Modules
+
+### Authentication
+
+- Register
+- Login
+- Refresh Token
+- Logout
+
+### Code Execution
+
+- Execute Code
+- Run Against Sample Test Cases
+
+### Submissions
+
+- Submit Solution
+- Get Submission History
+- Get Submission Details
+
+---
+
+## 💻 Code Execution Flow
+
+1. Recruiters sends invitaiton links to participants
+2. participants get assessment associated with the link
+3. Code is sent to the execution service (Judge0 or a self-hosted sandbox).
+4. Execution results are returned.
+5. Test cases are evaluated.
+6. Submission is queued for execution
+7. Response is returned to the client.
+
+---
+
+## 🔒 Authentication
+
+Authentication is handled using **JWT**.
+
+Include the token in requests:
+
+```http
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+---
+
+````
+
+---
+
+## 🧪 Future Improvements
+
+- WebSocket support for live code execution
+- Contest system
+- Leaderboards
+- AI-powered code review
+- Code plagiarism detection
+- Discussion forum
+- Email verification
+- Password reset
+- Rate limiting
+- Caching with Redis
+- Multi-language execution support
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
+git checkout -b feature/new-feature
+````
+
+3. Commit your changes
+
+```bash
+git commit -m "Add new feature"
+```
+
+4. Push the branch
+
+```bash
+git push origin feature/new-feature
+```
+
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+**Ezekiel Olabode**
+
+- GitHub: https://github.com/ayoeze191
+- LinkedIn: https://www.linkedin.com/in/olabode-ezekiel
