@@ -1,18 +1,17 @@
 # CodeBench Backend
 
-A scalable backend for **CodeBench**, an online coding platform that allows users to solve programming challenges, submit solutions, and execute code securely. The backend provides authentication, challenge management, submissions, code execution integration, and administrative features through a RESTful API.
+A scalable backend for **CodeBench**, an online coding platform that Recruiters to invite applicants for a little coding exercise.
 
 ---
 
 ## ✨ Features
 
-- 🔐 User authentication and authorization
+- 🔐 Recruiters authentication and authorization
 - 📝 Coding challenge management
 - 🚀 Code execution
 - ✅ Automated test case evaluation
 - 📊 Submission history
 - 📂 RESTful API
-- 🛡️ Role-based access control
 - 📄 API validation and error handling
 
 ---
@@ -22,8 +21,8 @@ A scalable backend for **CodeBench**, an online coding platform that allows user
 - **Node.js**
 - **Express.js**
 - **TypeScript** (or JavaScript)
-- **MongoDB**
-- **Mongoose**
+- **POSTGRES**
+- **PRISMA**
 - **JWT Authentication**
 - **Bcrypt**
 - **Docker** (optional)
